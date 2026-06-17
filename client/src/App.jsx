@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { createClient } from '@supabase/supabase-js'
 import './App.css'
-import Camera from './componentes/camera'
-import RespostaRapida from './componentes/respostaRapida'
-import { createClient } from "@supabase/supabase-js";
+import Layout from './componentes/layout/Layout'
+import Dashboard from './paginas/Dashboard'
+import Dispositivos from './paginas/Dispositivos'
+import Historico from './paginas/Historico'
+import Usuarios from './paginas/Usuarios'
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
 
@@ -15,7 +19,7 @@ function App() {
   }, []);
 
   async function getDispositivos() {
-    let { data, error } = await supabase.from('dispositivos').select('nome');  
+    let { data, error } = await supabase.from('dispositivos').select('nome');
     if (error) {
       console.error(error);
       return;
@@ -24,24 +28,16 @@ function App() {
   }
 
   return (
-    <>
-      <main class="min-w-0 flex-1">
-        <div class="flex h-[calc(100svh-3rem)] flex-col gap-4 p-4 lg:flex-row">
-          <div class="flex min-w-0 flex-1 flex-col gap-4">
-            <div class="min-h-0 flex-1">
-              <RespostaRapida />
-            </div>
-            <div class="min-h-0 flex-1">
-              <div class="grid h-full grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                <Camera nome="Estacionamento" numero="01"/>
-                <Camera nome="Corredor" numero="02" />
-                <Camera nome="Entrada" numero="03" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="dispositivos" element={<Dispositivos />} />
+          <Route path="historico" element={<Historico />} />
+          <Route path="usuarios" element={<Usuarios />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
