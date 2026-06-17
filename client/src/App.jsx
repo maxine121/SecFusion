@@ -15,14 +15,30 @@ function App() {
   }, []);
 
   async function getDispositivos() {
-    let { data, error } = await supabase.from('dispositivos').select('nome');  
+    const { data, error } = await supabase.from('dispositivos').select();  
     if (error) {
       console.error(error);
       return;
     }
     setDispositivos(data);
+    
   }
 
+  const [cameras, setCameras] = useState([]);
+
+  useEffect(() => {
+    getCameras();
+  }, []);
+
+  async function getCameras() {
+    const { data, error } = await supabase.from('camera').select();  
+    if (error) {
+      console.error(error);
+      return;
+    }
+    setCameras(data);
+    
+  }
   return (
     <>
       <main class="min-w-0 flex-1">
@@ -33,9 +49,9 @@ function App() {
             </div>
             <div class="min-h-0 flex-1">
               <div class="grid h-full grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                <Camera nome="Estacionamento" numero="01"/>
-                <Camera nome="Corredor" numero="02" />
-                <Camera nome="Entrada" numero="03" />
+                {cameras.map((camera) => (
+                  <Camera nome={camera.nome} url={camera.imagem}></Camera>
+                ))}
               </div>
             </div>
           </div>
