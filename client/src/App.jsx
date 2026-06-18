@@ -8,7 +8,7 @@ import Dispositivos from './paginas/Dispositivos'
 import Historico from './paginas/Historico'
 import Usuarios from './paginas/Usuarios'
 
-const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 
 function App() {
 
